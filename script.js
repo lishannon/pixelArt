@@ -4,11 +4,18 @@ let colorSelected;
 
 //Add a row
 function addR() {
-    alert("Clicked Add Row")
+    //alert("Clicked Add Row");
+    const pnode = document.createElement("tr");
+    const cnode = document.createElement("td");
+    pnode.appendChild(cnode);
+    document.getElementById("grid").appendChild(pnode);
+    numRows++;
+    console.log(numRows);
 }
 //Add a column
 function addC() {
-    alert("Clicked Add Col")
+    //alert("Clicked Add Col")
+    
 }
 
 //Remove a row
