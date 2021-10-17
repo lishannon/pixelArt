@@ -5,12 +5,29 @@ let colorSelected;
 //Add a row
 function addR() {
     //alert("Clicked Add Row");
-    const pnode = document.createElement("tr");
-    const cnode = document.createElement("td");
-    pnode.appendChild(cnode);
-    document.getElementById("grid").appendChild(pnode);
+    if (numRows == 0 && numCols ==0){
+        const pnode = document.createElement("tr");
+        const cnode = document.createElement("td");
+        pnode.appendChild(cnode);
+        document.getElementById("grid").appendChild(pnode);
+    } else {
+        // let pnode = document.createElement("tr");
+        // let cnode = document.createElement("td");
+        // pnode.appendChild(cnode); 
+
+        let cpy =document.getElementById("grid").firstElementChild.innerHTML;
+        let whole =  document.getElementById("grid").innerHTML;
+        document.getElementById("grid").innerHTML= cpy+ whole;
+        // let pnode = document.createElement("tr");
+        // let cnode = document.createElement(cpy);
+        // pnode.appendChild(cnode);
+        // // // for (var j =0; j < numCols; j++){
+        // // //     pnode.appendChild(cnode);
+        // // // }
+        
+       // document.getElementById("grid").appendChild(pnode);
+    }
     numRows++;
-    console.log(numRows);
 }
 //Add a column
 function addC() {
