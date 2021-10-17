@@ -42,7 +42,9 @@ function addC() {
 
 //Remove a row
 function removeR() {
-    alert("Clicked Remove Row")
+   //alert("Clicked Remove Row")
+   document.getElementById("grid").removeChild(document.getElementById("grid").lastElementChild);
+   numRows--;
 }
 //Remove a column
 function removeC() {
