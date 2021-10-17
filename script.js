@@ -11,21 +11,12 @@ function addR() {
         pnode.appendChild(cnode);
         document.getElementById("grid").appendChild(pnode);
     } else {
-        // let pnode = document.createElement("tr");
-        // let cnode = document.createElement("td");
-        // pnode.appendChild(cnode); 
-
-        let cpy =document.getElementById("grid").firstElementChild.innerHTML;
-        let whole =  document.getElementById("grid").innerHTML;
-        document.getElementById("grid").innerHTML= cpy+ whole;
-        // let pnode = document.createElement("tr");
-        // let cnode = document.createElement(cpy);
-        // pnode.appendChild(cnode);
-        // // // for (var j =0; j < numCols; j++){
-        // // //     pnode.appendChild(cnode);
-        // // // }
-        
-       // document.getElementById("grid").appendChild(pnode);
+        let pnode = document.createElement("tr");
+        let cnode = document.createElement("td");
+        pnode.appendChild(cnode); 
+        let firstChild = document.getElementById("grid").firstElementChild;
+        let cpy_firstChild = firstChild.cloneNode(true);
+       document.getElementById("grid").appendChild(cpy_firstChild);
     }
     numRows++;
 }
