@@ -5,11 +5,13 @@ let colorSelected;
 //Add a row
 function addR() {
     //alert("Clicked Add Row");
-    if (numRows == 0 && numCols ==0){
+    numRows++;
+    if (numRows == 1 && numCols ==0){
         const pnode = document.createElement("tr");
         const cnode = document.createElement("td");
         pnode.appendChild(cnode);
         document.getElementById("grid").appendChild(pnode);
+        numCols++; 
     } else {
         let pnode = document.createElement("tr");
         let cnode = document.createElement("td");
@@ -18,26 +20,39 @@ function addR() {
         let cpy_firstChild = firstChild.cloneNode(true);
        document.getElementById("grid").appendChild(cpy_firstChild);
     }
-    numRows++;
+    
 }
 //Add a column
 function addC() {
     //alert("Clicked Add Col")
-    if (numRows == 0 && numCols ==0){
+    numCols++;
+    if (numRows == 0 && numCols ==1){
         const pnode = document.createElement("tr");
         const cnode = document.createElement("td");
         pnode.appendChild(cnode);
         document.getElementById("grid").appendChild(pnode);
-    } else{
-        let l = "<td></td><td></td>";
+        numRows++;
+    } else if (numRows == 1 && numCols > 1 ) {
+        let l = "";
         for (var j =0; j < numCols; j++){
            l = l.concat("<td></td>");
+           document.getElementById("grid").children[0].innerHTML= l;
         }
-        for (var i =0; i < numRows; i++){
-            document.getElementById("grid").children[i].innerHTML= l;
+    } 
+    else{
+        for (var j =0; j < numRows; j++){
+            var t = document.getElementById("grid").children[j].firstElementChild;
+            var tdEle = t.cloneNode(true);
+            document.getElementById("grid").children[j].appendChild(tdEle);
         }
+
+        // for (var j =0; j < numRows; j++){
+        //    l = l.concat("<td></td>");
+        // }
+        // for (var i =0; i < numCols; i++){
+        //     document.getElementById("grid").children[i].innerHTML= l;
+        // }
     }
-    numCols++;
 }
 
 //Remove a row
@@ -57,11 +72,16 @@ function removeC() {
 //sets global var for selected color
 function selected(){
     colorSelected = document.getElementById("selectedID").value;
-    console.log(colorSelected);
+    console.log("color select: "+colorSelected);
 }
 
 function fill(){
-    alert("Clicked Fill All")
+    //alert("Clicked Fill All")
+    for (var i =0; i < numRows; i++){
+        for (var j =0; j < numCols; j++){
+        document.getElementById("grid").children[i][j].background = colorSelected;
+        }
+    }
 }
 
 function clearAll(){
