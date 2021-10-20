@@ -146,5 +146,15 @@ function clearAll(){
 }
 
 function fillU(){
-    alert("Clicked Fill All Uncolored")
+    //alert("Clicked Fill All Uncolored")
+    var bkColor = "";
+    for (var i =0; i < numRows; i++){
+        for (var j =0; j < numCols; j++){
+            bkColor =document.getElementById("grid").children[i].children[j].style.backgroundColor;
+            if(bkColor == ""  ){
+                document.getElementById("grid").children[i].children[j].style.backgroundColor= colorSelected;
+            }
+            
+        }
+    }
 }
