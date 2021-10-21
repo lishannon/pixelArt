@@ -4,53 +4,62 @@ let colorSelected;
 
 //Add a row
 function addR() {
-    //alert("Clicked Add Row");
     numRows++;
-    if (numRows == 1 && numCols ==0 ||numRows ==0){
-        const pnode = document.createElement("tr");
-        const cnode = document.createElement("td");
-        cnode.onclick = function (){
+    //Case1: 
+    // 1. The table is empty, no column no rows  
+    // 2. There is only one column 
+    if (numRows == 1 && numCols ==0 || numRows ==0){
+        const row = document.createElement("tr");
+        const col = document.createElement("td");
+        // click the single cell to change the color 
+        col.onclick = function (){
             this.style.backgroundColor = colorSelected;
           };
-        pnode.appendChild(cnode);
-        document.getElementById("grid").appendChild(pnode); 
+        row.appendChild(col);
+        document.getElementById("grid").appendChild(row); 
         numCols++; 
-    } else {
-        let pnode = document.createElement("tr");
+    } 
+    // Case 2: Add rows when there are more than one row and column
+    else { 
+        let row = document.createElement("tr");
         for (var j =0; j < numCols; j++){
-            let cnode = document.createElement("td");
-            cnode.onclick = function (){
+            let col = document.createElement("td");
+            // click the single cell to change the color 
+            col.onclick = function (){
                 this.style.backgroundColor = colorSelected;
             };
-            pnode.appendChild(cnode);
-           //l = l.concat("<td></td>");
+            row.appendChild(col);
         }
-        grid.appendChild(pnode);
-        //document.getElementById("grid").lastElementChild.innerHTML= l;
+        grid.appendChild(row);
     }
     
 }
+
 //Add a column
 function addC() {
-    //alert("Clicked Add Col")
+    //Case1: 
+    // 1. The table is empty, no column no rows  
     if (numRows == 0 && numCols ==0){
-        const pnode = document.createElement("tr");
-        const cnode = document.createElement("td");
-        cnode.onclick = function (){
+        const row = document.createElement("tr");
+        const col = document.createElement("td");
+        // click the single cell to change the color 
+        col.onclick = function (){
             this.style.backgroundColor = colorSelected;
         };
-        pnode.appendChild(cnode);
-        document.getElementById("grid").appendChild(pnode);
+        row.appendChild(col);
+        document.getElementById("grid").appendChild(row);
         numRows++;
         numCols++;
     }
-    else{
+    //Case2: Add columns when row and column is more than 1
+    else {  
         for (var j =0; j < numRows; j++){
-            var cnode = document.createElement("td");
-            cnode.onclick = function (){
+            var col = document.createElement("td");
+            // click the single cell to change the color 
+            col.onclick = function (){
                 this.style.backgroundColor = colorSelected;
             };
-            document.getElementById("grid").children[j].appendChild(cnode);
+            document.getElementById("grid").children[j].appendChild(col);
         }
         numCols++;
     }
@@ -71,28 +80,31 @@ function removeR() {
    console.log(numCols+" "+numRows);
    
 }
+
 //Remove a column
 function removeC() {
-    //alert("Clicked Remove Col")
-    //There isn't row or column to remove
+    //Ignore function if row and column are zero
     if (numRows ==0 && numCols ==0){
         numCols =0;
         numRows =0;
         return 0;
     }
+    // If the table only have one cell
     else if (numRows==1 && numCols==1){
         document.getElementById("grid").removeChild(document.getElementById("grid").lastElementChild);
         numRows = 0;
         numCols = 0;
     }
+    // If there is only one row and n number of columns
     else if (numRows ==1 && numCols!=0){
         document.getElementById("grid").firstElementChild.removeChild(document.getElementById("grid").firstElementChild.children[0]);
         numCols--;
-        //Deleted the last colum of that row. Set row to 0
+        //If it is deleting the last cell, set row to 0
         if(numCols ==0){
             numRows =0;
         }
-    } // if there is only one col left, and delete all the rows and the column 
+    } 
+    // If there is only one col left, and delete all the rows and the last column 
     else if(numCols == 1 ){
         for (var i =0; i < numRows; i++){
             document.getElementById("grid").children[i].removeChild(document.getElementById("grid").children[i].lastElementChild);
@@ -105,23 +117,21 @@ function removeC() {
         numCols = 0;
    }
    else{
-       numCols--;
-   
-    for (var i =0; i < numRows; i++){
-        document.getElementById("grid").children[i].removeChild(document.getElementById("grid").children[i].lastElementChild);
-    }
+        numCols--;
+        for (var i =0; i < numRows; i++){
+            document.getElementById("grid").children[i].removeChild(document.getElementById("grid").children[i].lastElementChild);
+        }      
    }
-   console.log(numCols+" "+numRows);
-    
-}
-//sets global var for selected color
-function selected(){
-    colorSelected = document.getElementById("selectedID").value;
-    console.log("color select: "+colorSelected);
 }
 
+//Sets global var for selected color
+function selected(){
+    colorSelected = document.getElementById("selectedID").value;
+}
+
+//Fill in all the cell 
 function fill(){
-    //alert("Clicked Fill All")
+    // Loop through the whole table and set the background to color selected 
     for (var i =0; i < numRows; i++){
         for (var j =0; j < numCols; j++){
         document.getElementById("grid").children[i].children[j].style.backgroundColor= colorSelected;
@@ -129,8 +139,9 @@ function fill(){
     }
 }
 
+//Clear the whole table 
 function clearAll(){
-    //alert("Clicked Clear All")
+    // Loop through the whole table and set the background to undefined
     for (var i =0; i < numRows; i++){
         for (var j =0; j < numCols; j++){
                 document.getElementById("grid").children[i].children[j].style.backgroundColor= "";
@@ -138,9 +149,10 @@ function clearAll(){
     }
 }
 
+//Fill in all the cell that have an undefined background color 
 function fillU(){
-    //alert("Clicked Fill All Uncolored")
     var defaultColor = "";
+    // Loop through all table to check which cells' background color is undefine and fill it in with color. 
     for (var i =0; i < numRows; i++){
         for (var j =0; j < numCols; j++){
             defaultColor =document.getElementById("grid").children[i].children[j].style.backgroundColor;
