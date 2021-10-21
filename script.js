@@ -6,80 +6,53 @@ let colorSelected;
 function addR() {
     //alert("Clicked Add Row");
     numRows++;
-    if (numRows == 1 && numCols ==0){
+    if (numRows == 1 && numCols ==0 ||numRows ==0){
         const pnode = document.createElement("tr");
         const cnode = document.createElement("td");
+        cnode.onclick = function (){
+            this.style.backgroundColor = colorSelected;
+          };
         pnode.appendChild(cnode);
-        document.getElementById("grid").appendChild(pnode);
+        document.getElementById("grid").appendChild(pnode); 
         numCols++; 
     } else {
-    //     Method 1;
-    //     let pnode = document.createElement("tr");
-    //     let cnode = document.createElement("td");
-    //     pnode.appendChild(cnode); 
-    //     let firstChild = document.getElementById("grid").firstElementChild;
-    //     let cpy_firstChild = firstChild.cloneNode(true);
-    //    document.getElementById("grid").appendChild(cpy_firstChild);
-
-    //     Method 2:
-    //create new row with one column first
         let pnode = document.createElement("tr");
-        let cnode = document.createElement("td");
-        pnode.appendChild(cnode); 
-        document.getElementById("grid").appendChild(pnode);
-
-    //rewrite the inner HTML
-        //Count the number of columns need 
-        //Create a string html 
-        let l = "";
         for (var j =0; j < numCols; j++){
-           l = l.concat("<td></td>");
+            let cnode = document.createElement("td");
+            cnode.onclick = function (){
+                this.style.backgroundColor = colorSelected;
+            };
+            pnode.appendChild(cnode);
+           //l = l.concat("<td></td>");
         }
-        //insert the new HTML in the last children element
-        document.getElementById("grid").lastElementChild.innerHTML= l;
+        grid.appendChild(pnode);
+        //document.getElementById("grid").lastElementChild.innerHTML= l;
     }
     
 }
 //Add a column
 function addC() {
     //alert("Clicked Add Col")
-    numCols++;
-    if (numRows == 0 && numCols ==1){
+    if (numRows == 0 && numCols ==0){
         const pnode = document.createElement("tr");
         const cnode = document.createElement("td");
+        cnode.onclick = function (){
+            this.style.backgroundColor = colorSelected;
+        };
         pnode.appendChild(cnode);
         document.getElementById("grid").appendChild(pnode);
         numRows++;
+        numCols++;
     }
-    // else if (numRows == 1 && numCols > 1 ) {
-    //     let l = "";
-    //     for (var j =0; j < numCols; j++){
-    //        l = l.concat("<td></td>");
-    //        document.getElementById("grid").children[0].innerHTML= l;
-    //     }
-    // } 
     else{
         for (var j =0; j < numRows; j++){
             var cnode = document.createElement("td");
-           // var t = document.getElementById("grid").children[j].firstElementChild;
-            //var tdEle = t.cloneNode(true);
+            cnode.onclick = function (){
+                this.style.backgroundColor = colorSelected;
+            };
             document.getElementById("grid").children[j].appendChild(cnode);
         }
-
-        // loop through all the rows & append another <td>
-        // const cnode = document.createElement("td");
-        // for (var j =0; j < numRows; j++){
-        //     document.getElementById("grid").children[j].appendChild(cnode);
-        // }
-
-        // count the number of columns
-        // let l = "";
-        // for (var j =0; j < numCols; j++){
-        //    l = l.concat("<td></td>");
-        // }
-        // for (var i =0; i < numRows; i++){
-        //     document.getElementById("grid").children[i].innerHTML= l;
-        // }
+        numCols++;
     }
 }
 
@@ -87,25 +60,40 @@ function addC() {
 function removeR() {
    //alert("Clicked Remove Row")
    if(numRows == 1){
+        document.getElementById("grid").removeChild(document.getElementById("grid").lastElementChild);
         numRows = 0;
         numCols = 0;
    }
-   else{
+   else if (numRows!=0){
        numRows--;
-   }
-   document.getElementById("grid").removeChild(document.getElementById("grid").lastElementChild);
-   
+       document.getElementById("grid").removeChild(document.getElementById("grid").lastElementChild);
+   }   
+   console.log(numCols+" "+numRows);
    
 }
 //Remove a column
 function removeC() {
     //alert("Clicked Remove Col")
-    if (numRows ==1){
-        document.getElementById("grid").removeChild(document.getElementById("grid").firstElementChild);
+    //There isn't row or column to remove
+    if (numRows ==0 && numCols ==0){
+        numCols =0;
+        numRows =0;
+        return 0;
+    }
+    else if (numRows==1 && numCols==1){
+        document.getElementById("grid").removeChild(document.getElementById("grid").lastElementChild);
         numRows = 0;
         numCols = 0;
     }
-    if(numCols == 1){
+    else if (numRows ==1 && numCols!=0){
+        document.getElementById("grid").firstElementChild.removeChild(document.getElementById("grid").firstElementChild.children[0]);
+        numCols--;
+        //Deleted the last colum of that row. Set row to 0
+        if(numCols ==0){
+            numRows =0;
+        }
+    } // if there is only one col left, and delete all the rows and the column 
+    else if(numCols == 1 ){
         for (var i =0; i < numRows; i++){
             document.getElementById("grid").children[i].removeChild(document.getElementById("grid").children[i].lastElementChild);
         }
@@ -123,6 +111,7 @@ function removeC() {
         document.getElementById("grid").children[i].removeChild(document.getElementById("grid").children[i].lastElementChild);
     }
    }
+   console.log(numCols+" "+numRows);
     
 }
 //sets global var for selected color
@@ -138,31 +127,26 @@ function fill(){
         document.getElementById("grid").children[i].children[j].style.backgroundColor= colorSelected;
         }
     }
-    // document.querySelectorAll("td").style.backgroundColor = colorSelected;
 }
 
 function clearAll(){
     //alert("Clicked Clear All")
-    var bkColor = "";
     for (var i =0; i < numRows; i++){
         for (var j =0; j < numCols; j++){
                 document.getElementById("grid").children[i].children[j].style.backgroundColor= "";
-            
-            
         }
     }
 }
 
 function fillU(){
     //alert("Clicked Fill All Uncolored")
-    var bkColor = "";
+    var defaultColor = "";
     for (var i =0; i < numRows; i++){
         for (var j =0; j < numCols; j++){
-            bkColor =document.getElementById("grid").children[i].children[j].style.backgroundColor;
-            if(bkColor == ""  ){
+            defaultColor =document.getElementById("grid").children[i].children[j].style.backgroundColor;
+            if(defaultColor == ""  ){
                 document.getElementById("grid").children[i].children[j].style.backgroundColor= colorSelected;
             }
-            
         }
     }
 }
